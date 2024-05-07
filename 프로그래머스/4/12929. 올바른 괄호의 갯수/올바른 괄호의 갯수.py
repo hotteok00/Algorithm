@@ -1,11 +1,17 @@
 def solution(n):
-    c_list = [1, 1]
+    if n == 1: return 1  
+    
+    cnt_list = [0, 1]
     
     for i in range(1, n):
-        c = 0
-        for j in range(i + 1):
-            c += c_list[j] * c_list[i - j]
-            
-        c_list.append(c)
+        tmp = 0
+        
+        l = len(cnt_list)
+        for j in range(l):
+            tmp += (l - j) * cnt_list[j]
+        
+        tmp += 1
+        
+        cnt_list.append(tmp)
     
-    return c_list[n]
+    return cnt_list[n]
