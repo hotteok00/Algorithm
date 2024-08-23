@@ -6,10 +6,10 @@ N = int(input())
 M = int(input())
 
 # count
-node = [0 for _ in range(N + 1)]
+# node = [0 for _ in range(N + 1)]
 
 # prev -> next = time, visite
-edge            = [[] for _ in range(N + 1)]
+# edge            = [[] for _ in range(N + 1)]
 reversed_edge   = [[] for _ in range(N + 1)]
 # edge = {i : [] for i in range(1, N + 1)}
 # reversed_edge = {i : [] for i in range(1, N + 1)}
@@ -18,10 +18,8 @@ threshold_path = [0 for _ in range(N + 1)]
 
 for _ in range(M):
     s, e, t = map(int, input().split())
-    node[e] += 1
-    edge[s].append([e, t])
     reversed_edge[e].append([s, t, False])
-    # threshold_path[e] = max(threshold_path[e], threshold_path[s] + t)
+    threshold_path[e] = max(threshold_path[e], threshold_path[s] + t)
     
 S, E = map(int, input().split())
 
@@ -30,16 +28,16 @@ from collections import deque
 next_node_queue = deque()
 
 # sort
-next_node_queue.append(S)
+# next_node_queue.append(S)
 
-while next_node_queue:
-    next_node = next_node_queue.popleft()
-    for e, t in edge[next_node]:
-        node[e] -= 1
-        threshold_path[e] = max(threshold_path[e], threshold_path[next_node] + t)
-        if node[e] == 0: next_node_queue.append(e)
+# while next_node_queue:
+#     next_node = next_node_queue.popleft()
+#     for e, t in edge[next_node]:
+#         node[e] -= 1
+#         threshold_path[e] = max(threshold_path[e], threshold_path[next_node] + t)
+#         if node[e] == 0: next_node_queue.append(e)
 
-next_node_queue.clear()
+# next_node_queue.clear()
 
 # reversed sort
 next_node_queue.append(E)
