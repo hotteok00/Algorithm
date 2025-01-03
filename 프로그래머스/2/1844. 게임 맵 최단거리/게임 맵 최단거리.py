@@ -1,36 +1,34 @@
 from collections import deque
 
 def solution(maps):
-    answer = -1
+    x, y, distance = 0, 0, 0
+    visited = [[False for _ in range(len(maps[0]))] for _ in range(len(maps))]
+    next_paths = deque()
     
-    n = len(maps)
-    m = len(maps[0])
-    
-    dx = [1, 0, -1, 0]
-    dy = [0, 1, 0, -1]
-    
-    start_x, start_y = 0, 0
-    end_x, end_y = n-1, m-1
-    
-    q = deque()
-    q.append((start_x, start_y, 1))
-    
-    visited = set()
-    visited.add((start_x, start_y))
-    
-    while q:
-        x, y, distance = q.popleft()
+    next_paths.append([x, y])
+    visited[x][y] = True
+    while next_paths:
+        distance += 1
+        for _ in range(len(next_paths)):
+            nx, ny = next_paths.popleft()
+
+            if isArrived(nx, ny, maps): 
+                return distance
+
+            get_next_paths(nx, ny, maps, visited, next_paths)
         
-        if (end_x, end_y) == (x, y):
-            answer = distance
-            break
-        
-        for d in range(4):
-            nx = x + dx[d]
-            ny = y + dy[d]
-            
-            if 0<=nx<n and 0<=ny<m and maps[nx][ny] == 1 and (nx, ny) not in visited:
-                q.append((nx, ny, distance + 1))
-                visited.add((nx, ny))
-    
-    return answer
+    return -1
+
+def isArrived(nx, ny, maps):
+    if nx == len(maps) - 1 and ny == len(maps[0]) - 1:
+        return True
+    return False
+
+def get_next_paths(x, y, maps, visited, next_paths):
+    directions = [[1,0], [0,1], [-1,0], [0,-1]]
+    for dx, dy in directions:
+        nx, ny = x + dx, y + dy
+        if (0 <= nx < len(maps)) and (0 <= ny < len(maps[0])):
+            if not visited[nx][ny] and maps[nx][ny] == 1:
+                visited[nx][ny] = True
+                next_paths.append([nx, ny])
